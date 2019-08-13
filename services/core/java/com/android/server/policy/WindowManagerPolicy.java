@@ -1487,4 +1487,9 @@ public interface WindowManagerPolicy extends WindowManagerPolicyConstants {
     void registerFingerListener(FingerListener fingerListener);
     void interceptPowerKeyByFinger(long time);
     void notifySideFpAuthenOrEnroll(boolean start);
+
+    @Override
+    public void takeAlternativeScreenshot() {
+        mPolicy.takeAlternativeScreenshot();
+    }
 }

@@ -270,6 +270,9 @@
     <!-- Query all packages on device on R+ -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
+    <!-- Asus Long screenshot -->
+    <uses-permission android:name="com.asus.stitchimage.permission.EXPORTED_FOR_ASUS_APPS"/>
+
     <!-- Permission to register process observer -->
     <uses-permission android:name="android.permission.SET_ACTIVITY_WATCHER"/>
 
