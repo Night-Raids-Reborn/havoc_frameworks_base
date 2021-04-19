@@ -250,7 +250,4 @@
     <!-- Sensors QS tile -->
     <string name="sensor_privacy_mode_tile">Sensors</string>
 
-    <!-- Scrolling Screenshot string -->
-    <string name="scrollss">Scroll</string>
-
 </resources>
