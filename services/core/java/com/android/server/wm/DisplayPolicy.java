@@ -4144,7 +4144,7 @@ public class DisplayPolicy {
             mScreenshotHelper.takeScreenshot(screenshotType,
                     getStatusBar() != null && getStatusBar().isVisibleLw(),
                     getNavigationBar() != null && getNavigationBar().isVisibleLw(),
-                    source, mHandler, null, /* completionConsumer */
+                    source, mHandler, completionConsumer,
                     packageName);
         }
     }
