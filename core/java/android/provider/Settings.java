@@ -16638,6 +16638,12 @@ public final class Settings {
          * @hide
          */
         public static final String PM_DOWNGRADE_ALLOWED = "pm_downgrade_allowed";
+
+        /**
+         * Control whether FLAG_SECURE is ignored for all windows.
+         * @hide
+         */
+        public static final String WINDOW_IGNORE_SECURE = "window_ignore_secure";
     }
 
     /**
