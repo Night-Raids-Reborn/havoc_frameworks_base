@@ -231,4 +231,8 @@
     <java-symbol type="string" name="applock_prompt_title" />
     <java-symbol type="string" name="applock_prompt_subtitle" />
 
+    <!-- PropImitationHooks -->
+    <java-symbol type="string" name="config_certifiedFingerprint" />
+    <java-symbol type="string" name="config_stockFingerprint" />
+
 </resources>
