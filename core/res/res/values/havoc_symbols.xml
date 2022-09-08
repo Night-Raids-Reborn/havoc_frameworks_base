@@ -230,5 +230,7 @@
     <!-- App lock -->
     <java-symbol type="string" name="applock_prompt_title" />
     <java-symbol type="string" name="applock_prompt_subtitle" />
-
+    
+    <!-- Whether to spoof device as Pixel XL for Google Photos -->
+    <java-symbol type="bool" name="config_spoofGooglePhotos" />
 </resources>
