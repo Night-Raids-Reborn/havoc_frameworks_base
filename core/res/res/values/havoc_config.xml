@@ -341,10 +341,7 @@
     <!-- Whether to enable performance tuning in Gaming mode -->
     <bool name="config_enableGamingPerformanceTuning">false</bool>
 
-    <!-- Build fingerprint from a GMS certified device against current platform SPL level -->
-    <string name="config_certifiedFingerprint" translatable="false"></string>
-
-     <!-- Build properties from a GMS certified device against current platform SPL level -->
+    <!-- Build properties from a GMS certified device against current platform SPL level -->
     <string-array name="config_certifiedBuildProperties" translatable="false">
       <!-- 
         <item>Build.DEVICE</item>
@@ -353,5 +350,11 @@
         <item>Build.FINGERPRINT</item>
       -->
     </string-array>
+    
+    <!-- Build fingerprint from the stock ROM -->
+    <string name="config_stockFingerprint" translatable="false"></string>
+
+    <!-- Whether to spoof device as Pixel XL for Google Photos -->
+    <bool name="config_spoofGooglePhotos">true</bool>
 
 </resources>
