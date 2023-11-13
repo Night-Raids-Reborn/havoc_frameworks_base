@@ -963,6 +963,9 @@ class Task extends WindowContainer<WindowContainer> {
             mCallingUid = r.launchedFromUid;
             mCallingPackage = r.launchedFromPackage;
             mCallingFeatureId = r.launchedFromFeatureId;
+            if (info != null) {
+            mPackageName = info.packageName;
+        }
             setIntent(intent != null ? intent : r.intent, info != null ? info : r.info);
         }
         setLockTaskAuth(r);
