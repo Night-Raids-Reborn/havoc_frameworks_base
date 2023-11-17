@@ -967,8 +967,8 @@ class Task extends WindowContainer<WindowContainer> {
             mPackageName = info.packageName;
         }
             setIntent(intent != null ? intent : r.intent, info != null ? info : r.info);
+            setLockTaskAuth(r);
         }
-        setLockTaskAuth(r);
     }
 
     /** Sets the original intent, _without_ updating the calling uid or package. */
