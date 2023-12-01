@@ -271,18 +271,17 @@ public class PixelPropsUtils {
     }
 
     private static void spoofBuildGms() {
-        // Alter model name and fingerprint to Pixel 2 to avoid hardware attestation enforcement
-        setPropValue("BRAND", "google");
-        setPropValue("PRODUCT", "walleye");
-        setPropValue("MODEL", "Pixel 2");
-        setPropValue("MANUFACTURER", "Google");
-        setPropValue("DEVICE", "walleye");
-        setPropValue("FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys");
-        setPropValue("ID", "OPM1.171019.011");
+        // Alter model name and fingerprint to NVIDIA Shield TV for avoid hardware attestation enforcement
+        setPropValue("BRAND", "NVIDIA");
+        setPropValue("PRODUCT", "foster_e");
+        setPropValue("MODEL", "SHIELD Android TV");
+        setPropValue("MANUFACTURER", "NVIDIA");
+        setPropValue("DEVICE", "foster");
+        setPropValue("FINGERPRINT", "NVIDIA/foster_e/foster:7.0/NRD90M/2427173_1038.2788:user/release-keys");
         setPropValue("TYPE", "user");
         setPropValue("TAGS", "release-keys");
-        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.O_MR1);
-        setVersionFieldString("SECURITY_PATCH", "2017-12-05");
+        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N);
+        setVersionFieldString("SECURITY_PATCH", "2018-01-05");
     }
 
     private static boolean isCallerSafetyNet() {
