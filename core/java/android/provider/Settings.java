@@ -10961,7 +10961,7 @@ public final class Settings {
          * Control whether FLAG_SECURE is ignored for all windows.
          * @hide
          */
-        public static final String WINDOW_IGNORE_SECURE = "window_ignore_secure"
+        public static final String WINDOW_IGNORE_SECURE = "window_ignore_secure";
 
         /**
          * Indicates whether Sleep Mode turns on automatically
