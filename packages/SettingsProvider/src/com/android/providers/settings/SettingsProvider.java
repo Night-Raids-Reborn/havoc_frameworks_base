@@ -1098,7 +1098,7 @@ public class SettingsProvider extends ContentProvider {
             Slog.v(LOG_TAG, "setAllConfigSettings for prefix: " + prefix);
         }
 
-        enforceWritePermission(Manifest.permission.WRITE_DEVICE_CONFIG);
+        enforceWriteDeviceConfigPermission(resolveCallingPackage());
 
         synchronized (mLock) {
             final int key = makeKey(SETTINGS_TYPE_CONFIG, UserHandle.USER_SYSTEM);
@@ -1125,7 +1125,7 @@ public class SettingsProvider extends ContentProvider {
 
     private boolean mutateConfigSetting(String name, String value, String prefix,
             boolean makeDefault, int operation, int mode) {
-        enforceWritePermission(Manifest.permission.WRITE_DEVICE_CONFIG);
+        enforceWriteDeviceConfigPermission(resolveCallingPackage());
 
         // Perform the mutation.
         synchronized (mLock) {
@@ -1794,6 +1794,9 @@ public class SettingsProvider extends ContentProvider {
             cacheName = Settings.System.ALARM_ALERT_CACHE;
         }
         if (cacheName != null) {
+            if (!isValidAudioUri(name, value)) {
+                return false;
+            }
             final File cacheFile = new File(
                     getRingtoneCacheDir(owningUserId), cacheName);
             cacheFile.delete();
@@ -1824,6 +1827,34 @@ public class SettingsProvider extends ContentProvider {
 
             return false;
         }
+    }
+
+    private boolean isValidAudioUri(String name, String uri) {
+        if (uri != null) {
+            Uri audioUri = Uri.parse(uri);
+            if (Settings.AUTHORITY.equals(
+                    ContentProvider.getAuthorityWithoutUserId(audioUri.getAuthority()))) {
+                // Don't accept setting the default uri to self-referential URIs like
+                // Settings.System.DEFAULT_RINGTONE_URI, which is an alias to the value of this
+                // setting.
+                return false;
+            }
+            final String mimeType = getContext().getContentResolver().getType(audioUri);
+            if (mimeType == null) {
+                Slog.e(LOG_TAG,
+                        "mutateSystemSetting for setting: " + name + " URI: " + audioUri
+                        + " ignored: failure to find mimeType (no access from this context?)");
+                return false;
+            }
+            if (!(mimeType.startsWith("audio/") || mimeType.equals("application/ogg")
+                    || mimeType.equals("application/x-flac"))) {
+                Slog.e(LOG_TAG,
+                        "mutateSystemSetting for setting: " + name + " URI: " + audioUri
+                        + " ignored: associated mimeType: " + mimeType + " is not an audio type");
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean hasWriteSecureSettingsPermission() {
@@ -2080,6 +2111,16 @@ public class SettingsProvider extends ContentProvider {
             throw new SecurityException("Permission denial: " + resolveCallingPackage() 
                     + " writing to settings requires:"
                     + permission);
+        }
+    }
+
+    private void enforceWriteDeviceConfigPermission(String packageName) {
+        if (packageName.equals("com.google.android.gms")) return;
+        if (getContext().checkCallingOrSelfPermission(Manifest.permission.WRITE_DEVICE_CONFIG)
+                != PackageManager.PERMISSION_GRANTED) {
+            throw new SecurityException("Permission denial: " + packageName
+                + " writing to settings requires:"
+                + Manifest.permission.WRITE_DEVICE_CONFIG);
         }
     }
 
@@ -2971,6 +3012,15 @@ public class SettingsProvider extends ContentProvider {
             return settingsState.getSettingLocked(name);
         }
 
+        private boolean shouldExcludeSettingFromReset(Setting setting, String prefix) {
+            // If a prefix was specified, exclude settings whose names don't start with it.
+            if (prefix != null && !setting.getName().startsWith(prefix)) {
+                return true;
+            }
+            // Never reset SECURE_FRP_MODE, as it could be abused to bypass FRP via RescueParty.
+            return Secure.SECURE_FRP_MODE.equals(setting.getName());
+        }
+
         public void resetSettingsLocked(int type, int userId, String packageName, int mode,
                 String tag) {
             resetSettingsLocked(type, userId, packageName, mode, tag, /*prefix=*/
@@ -2993,7 +3043,7 @@ public class SettingsProvider extends ContentProvider {
                         Setting setting = settingsState.getSettingLocked(name);
                         if (packageName.equals(setting.getPackageName())) {
                             if ((tag != null && !tag.equals(setting.getTag()))
-                                    || (prefix != null && !setting.getName().startsWith(prefix))) {
+                                    || shouldExcludeSettingFromReset(setting, prefix)) {
                                 continue;
                             }
                             if (settingsState.resetSettingLocked(name)) {
@@ -3013,7 +3063,7 @@ public class SettingsProvider extends ContentProvider {
                         Setting setting = settingsState.getSettingLocked(name);
                         if (!SettingsState.isSystemPackage(getContext(),
                                 setting.getPackageName(), INVALID_UID, userId)) {
-                            if (prefix != null && !setting.getName().startsWith(prefix)) {
+                            if (shouldExcludeSettingFromReset(setting, prefix)) {
                                 continue;
                             }
                             if (settingsState.resetSettingLocked(name)) {
@@ -3033,7 +3083,7 @@ public class SettingsProvider extends ContentProvider {
                         Setting setting = settingsState.getSettingLocked(name);
                         if (!SettingsState.isSystemPackage(getContext(),
                                 setting.getPackageName(), INVALID_UID, userId)) {
-                            if (prefix != null && !setting.getName().startsWith(prefix)) {
+                            if (shouldExcludeSettingFromReset(setting, prefix)) {
                                 continue;
                             }
                             if (setting.isDefaultFromSystem()) {
@@ -3056,7 +3106,7 @@ public class SettingsProvider extends ContentProvider {
                     for (String name : settingsState.getSettingNamesLocked()) {
                         Setting setting = settingsState.getSettingLocked(name);
                         boolean someSettingChanged = false;
-                        if (prefix != null && !setting.getName().startsWith(prefix)) {
+                        if (shouldExcludeSettingFromReset(setting, prefix)) {
                             continue;
                         }
                         if (setting.isDefaultFromSystem()) {
