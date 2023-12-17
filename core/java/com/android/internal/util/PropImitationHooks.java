@@ -92,12 +92,16 @@ public class PropImitationHooks {
          * Set stock fingerprint for ARCore
          * Set Pixel XL for Google Photos and Snapchat
          */
-        if (sCertifiedProps.length == 4 && sIsGms) {
+        if (sCertifiedProps.length == 8 && sIsGms) {
             dlog("Spoofing build for GMS");
             setPropValue("DEVICE", sCertifiedProps[0]);
             setPropValue("PRODUCT", sCertifiedProps[1]);
             setPropValue("MODEL", sCertifiedProps[2]);
             setPropValue("FINGERPRINT", sCertifiedProps[3]);
+            setPropValue("MANUFACTURER", sCertifiedProps[4]);
+            setPropValue("BRAND", sCertifiedProps[5]);
+            setPropValue("SECURITY_PATCH", sCertifiedProps[6]);
+            setPropValue("FIRST_API_LEVEL", sCertifiedProps[7]);
         } else if (!sStockFp.isEmpty() && packageName.equals(PACKAGE_ARCORE)) {
             dlog("Setting stock fingerprint for: " + packageName);
             setPropValue("FINGERPRINT", sStockFp);
