@@ -350,7 +350,7 @@
         <item>Build.FINGERPRINT</item>
       -->
     </string-array>
-    
+
     <!-- Build fingerprint from the stock ROM -->
     <string name="config_stockFingerprint" translatable="false"></string>
 
