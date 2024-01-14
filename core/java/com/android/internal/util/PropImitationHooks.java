@@ -94,12 +94,12 @@ public class PropImitationHooks {
          */
         if (sCertifiedProps.length == 8 && sIsGms) {
             dlog("Spoofing build for GMS");
-            setPropValue("DEVICE", sCertifiedProps[0]);
-            setPropValue("PRODUCT", sCertifiedProps[1]);
-            setPropValue("MODEL", sCertifiedProps[2]);
-            setPropValue("FINGERPRINT", sCertifiedProps[3]);
-            setPropValue("MANUFACTURER", sCertifiedProps[4]);
-            setPropValue("BRAND", sCertifiedProps[5]);
+            setPropValue("PRODUCT", sCertifiedProps[0]);
+            setPropValue("DEVICE", sCertifiedProps[1]);
+            setPropValue("MANUFACTURER", sCertifiedProps[2]);
+            setPropValue("BRAND", sCertifiedProps[3]);
+            setPropValue("MODEL", sCertifiedProps[4]);
+            setPropValue("FINGERPRINT", sCertifiedProps[5]);
             setPropValue("SECURITY_PATCH", sCertifiedProps[6]);
             setPropValue("FIRST_API_LEVEL", sCertifiedProps[7]);
         } else if (!sStockFp.isEmpty() && packageName.equals(PACKAGE_ARCORE)) {
