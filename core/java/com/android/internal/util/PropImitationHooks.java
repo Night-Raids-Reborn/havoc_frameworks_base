@@ -27,7 +27,6 @@ import com.android.internal.R;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Map;
 
 public class PropImitationHooks {
 
@@ -40,23 +39,10 @@ public class PropImitationHooks {
     private static final String sStockFp =
             Resources.getSystem().getString(R.string.config_stockFingerprint);
 
-    private static final boolean sSpoofPhotos =
-            Resources.getSystem().getBoolean(R.bool.config_spoofGooglePhotos);
-
     private static final String PACKAGE_ARCORE = "com.google.ar.core";
     private static final String PACKAGE_FINSKY = "com.android.vending";
     private static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
-    private static final String PACKAGE_GPHOTOS = "com.google.android.apps.photos";
-
-    private static final Map<String, Object> sPixelXLProps = Map.of(
-        "BRAND", "google",
-        "MANUFACTURER", "Google",
-        "DEVICE", "marlin",
-        "PRODUCT", "marlin",
-        "MODEL", "Pixel XL",
-        "FINGERPRINT", "google/marlin/marlin:10/QP1A.191005.007.A3/5972272:user/release-keys"
-    );
 
     private static volatile boolean sIsGms = false;
     private static volatile boolean sIsFinsky = false;
@@ -75,7 +61,6 @@ public class PropImitationHooks {
 
         /* Set certified properties for GMSCore
          * Set stock fingerprint for ARCore
-         * Set Pixel XL for Google Photos
          */
         if (sCertifiedProps.length == 8 && sIsGms) {
             dlog("Spoofing build for GMS");
@@ -90,9 +75,6 @@ public class PropImitationHooks {
         } else if (!sStockFp.isEmpty() && packageName.equals(PACKAGE_ARCORE)) {
             dlog("Setting stock fingerprint for: " + packageName);
             setPropValue("FINGERPRINT", sStockFp);
-        } else if (sSpoofPhotos && packageName.equals(PACKAGE_GPHOTOS)) {
-            dlog("Spoofing Pixel XL for Google Photos");
-            sPixelXLProps.forEach((PropImitationHooks::setPropValue));
         }
     }
 
